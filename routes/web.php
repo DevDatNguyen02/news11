@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\CategoryController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -23,6 +24,7 @@ Route::get('logout',[PagesController::class, 'getLogout']);
 Route::get('/', [PagesController::class, 'trangchu']);
 Route::get('/user/{id}',[PagesController::class, 'userDetails']);
 Route::get('/trangcanhan',[PagesController::class, 'userDetails']);
+Route::get('/category/{id}_{sort_name}.html',[PagesController::class, 'category']);
 Route::middleware('auth')->group(function() {
     Route::prefix('trangcanhan')->group(function() {
         Route::get('/edit', [PagesController::class, 'getEditProfile']);
@@ -38,6 +40,18 @@ Route::middleware('auth')->group(function() {
 Route::middleware('staff')->group(function() {
     Route::prefix('admin')->group(function(){
 
+        Route::get('/', [CategoryController::class, 'list']);
+
+        Route::prefix('category')->group(function(){
+            Route::get('/list',[CategoryController::class, 'list']);
+            Route::get('/create',[CategoryController::class, 'getCreate']);
+            Route::post('/create',[CategoryController::class, 'postCreate']);
+            Route::get('/edit/{id}',[CategoryController::class, 'getEdit']);
+            Route::post('/edit/{id}',[CategoryController::class, 'postEdit']);
+            Route::get('/active/{id}',[CategoryController::class, 'postActive']);
+            Route::get('/block/{id}',[CategoryController::class, 'postNoActive']);
+            Route::get('/delete/{id}',[CategoryController::class, 'getDelete']);
+        });
        
 
         
