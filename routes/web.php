@@ -4,7 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PagesController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
-
+use App\Http\Controllers\SubcategoryController;
+use App\Http\Controllers\AjaxController;
 Route::get('/', function () {
     return view('welcome');
 });
@@ -25,6 +26,7 @@ Route::get('/', [PagesController::class, 'trangchu']);
 Route::get('/user/{id}',[PagesController::class, 'userDetails']);
 Route::get('/trangcanhan',[PagesController::class, 'userDetails']);
 Route::get('/category/{id}_{sort_name}.html',[PagesController::class, 'category']);
+Route::get('/subcategory/{id}_{sort_name}.html',[PagesController::class, 'subcategory']);
 Route::middleware('auth')->group(function() {
     Route::prefix('trangcanhan')->group(function() {
         Route::get('/edit', [PagesController::class, 'getEditProfile']);
@@ -54,7 +56,17 @@ Route::middleware('staff')->group(function() {
         });
        
 
-        
+        Route::prefix('subcategory')->group(function() {
+            Route::get('/list', [SubcategoryController::class, 'list']);
+            Route::get('/create', [SubcategoryController::class, 'getCreate']);
+            Route::post('/create', [SubcategoryController::class, 'postCreate']);
+            Route::get('/edit/{id}', [SubcategoryController::class, 'getEdit']);
+            Route::post('/edit/{id}', [SubcategoryController::class, 'postEdit']);
+            Route::get('/active/{id}', [SubcategoryController::class, 'postActive']);
+            Route::get('/block/{id}', [SubcategoryController::class, 'postNoActive']);
+            Route::get('/delete/{id}',[SubcategoryController::class, 'getDelete']);
+        });
+
        
         Route::prefix('user')->group(function() {
             Route::get('/list', [UserController::class, 'list']);
@@ -72,4 +84,5 @@ Route::middleware('staff')->group(function() {
     });
 });
 
+Route::get('ajax/Subcategory/{category_id}',[ AjaxController::class, 'getSub']);
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
