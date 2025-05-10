@@ -5,6 +5,7 @@ use App\Http\Controllers\PagesController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SubcategoryController;
+use App\Http\Controllers\NewsController;
 use App\Http\Controllers\AjaxController;
 Route::get('/', function () {
     return view('welcome');
@@ -67,6 +68,16 @@ Route::middleware('staff')->group(function() {
             Route::get('/delete/{id}',[SubcategoryController::class, 'getDelete']);
         });
 
+        Route::prefix('news')->group(function() {
+            Route::get('/list', [NewsController::class, 'list']);
+            Route::get('/create', [NewsController::class, 'getCreate']);
+            Route::post('/create', [NewsController::class, 'postCreate']);
+            Route::get('/edit/{id}', [NewsController::class, 'getEdit']);
+            Route::post('/edit/{id}', [NewsController::class, 'postEdit']);
+            Route::get('/active/{id}', [NewsController::class, 'postActive']);
+            Route::get('/block/{id}', [NewsController::class, 'postNoActive']);
+            Route::get('/delete/{id}',[NewsController::class, 'getDelete']);
+        });
        
         Route::prefix('user')->group(function() {
             Route::get('/list', [UserController::class, 'list']);
