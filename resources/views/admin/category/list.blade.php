@@ -63,7 +63,7 @@
                                             <th>ID</th>
                                             <th>Name</th>
                                             <th>Sort Name</th>
-                                            <th>Active</th>
+                                            <!-- <th>Active</th> -->
                                             <th>Delete</th>
                                             <th>Edit</th>
                                         </tr>
@@ -74,7 +74,7 @@
                                             <td>{!! $value['id'] !!}</td>
                                             <td>{!! $value['name'] !!}</td>
                                             <td>{!! $value['sort_name'] !!}</td>
-                                            <td>
+                                            <!-- <td>
                                                 @if ( $value['active'] == 1 )
                                                 <a href="admin/category/block/{!! $value['id'] !!}">
                                                   <img style="width: 40px" src="upload/icon/accept.png" alt="">
@@ -84,7 +84,7 @@
                                                     <img style="width: 40px" src="upload/icon/noaccept.png" alt="">
                                                 </a>
                                                 @endif
-                                            </td>
+                                            </td> -->
                                             <td class="center">
                                                 <a class="btn btn-danger" href="admin/category/delete/{!! $value['id'] !!}">Delete</a>
                                             </td>

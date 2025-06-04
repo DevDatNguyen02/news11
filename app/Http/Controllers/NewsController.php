@@ -145,7 +145,7 @@ class NewsController extends Controller
             }
             $news = News::find($id);
             $file->move('upload/news',$img);
-            if ($news['image'] != ''){
+            if ($news['image'] != '' && file_exists('upload/news/'.$news['image'])) {
                 unlink('upload/news/'.$news['image']);
             }
             $request['image'] = $img;

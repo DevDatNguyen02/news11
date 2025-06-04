@@ -86,3 +86,36 @@ $(document).ready(function (){
          }  
      });
  });
+
+document.addEventListener('DOMContentLoaded', function() {
+    const btn = document.getElementById('toggle-theme');
+    if (!btn) return;
+    // Hàm cập nhật icon theo theme
+    function updateIcon() {
+    if(document.body.classList.contains('dark-theme')) {
+        btn.textContent = '☀️';
+        btn.classList.remove('theme-light');
+        btn.classList.add('theme-dark');
+    } else {
+        btn.textContent = '🌙';
+        btn.classList.remove('theme-dark');
+        btn.classList.add('theme-light');
+    }
+}
+    // Khởi tạo icon đúng trạng thái
+    const currentTheme = localStorage.getItem('theme');
+    if(currentTheme === 'dark') {
+        document.body.classList.add('dark-theme');
+    }
+    updateIcon();
+
+    btn.onclick = function() {
+        document.body.classList.toggle('dark-theme');
+        localStorage.setItem('theme', document.body.classList.contains('dark-theme') ? 'dark' : 'light');
+        // Hiệu ứng chuyển đổi icon
+        btn.classList.add('theme-rotate');
+        setTimeout(() => btn.classList.remove('theme-rotate'), 300);
+        updateIcon();
+    }
+});
+

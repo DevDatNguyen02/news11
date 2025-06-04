@@ -21,8 +21,8 @@ class PagesController extends Controller
         $banner = Banner::all();
         $subcategory = Subcategory::all();
         $about = About::find(1);
-        $baivietmoinhat = News::get()->where('type', 1)->where('active', 1)->sortByDesc('created_at')->take(4);
-        $baivietnoibat = News::get()->where('type', 1)->where('index', 1)->where('active', 1)->sortByDesc('created_at')->take(4);
+        $baivietmoinhat = News::get()->where('type', 1)->where('active', 1)->sortByDesc('created_at')->take(15);
+        $baivietnoibat = News::get()->where('type', 1)->where('index', 1)->where('active', 1)->sortByDesc('created_at')->take(15);
         view()->share('baivietnoibat', $baivietnoibat);
         view()->share('baivietmoinhat', $baivietmoinhat);
         view()->share('banner', $banner);
@@ -30,8 +30,38 @@ class PagesController extends Controller
         view()->share('subcategory', $subcategory);
         view()->share('about', $about);
     }
+    
+    // load thêm tin tức
+    // public function loadMoreNews(Request $request)
+    // {
+    //     $page = $request->input('page', 1);
+    //     $perPage = 5;
+    //     $skip = ($page - 1) * $perPage;
 
-    //* trang chủ
+    //     $news = News::where('type', 1)
+    //         ->where('active', 1)
+    //         ->orderBy('created_at', 'desc')
+    //         ->skip($skip)
+    //         ->take($perPage)
+    //         ->get();
+
+    //     $html = '';
+    //     foreach ($news as $value) {
+    //         $html .= view('pages.partials.item_news', compact('value'))->render();
+    //     }
+
+    //     // Kiểm tra còn tin không
+    //     $hasMore = News::where('type', 1)
+    //         ->where('active', 1)
+    //         ->count() > $skip + $perPage;
+
+    //     return response()->json([
+    //         'html' => $html,
+    //         'hasMore' => $hasMore,
+    //         'nextPage' => $page + 1
+    //     ]);
+    // }
+    // hiển thị danh sách tin video (take)
     public function trangchu() {
         $videomoinhat = News::get()->where('type', 0)->where('active', 1)->sortByDesc('created_at')->take(4);
         $videonoibat = News::get()->where('type', 0)->where('index', 1)->where('active', 1)->sortByDesc('created_at')->take(4);
@@ -47,7 +77,7 @@ class PagesController extends Controller
 
     //* trang blog
     public function blog() {
-        $news = News::where('type', 1)->where('active', 1)->orderby('created_at', 'DESC')->simplePaginate(5);
+        $news = News::where('type', 1)->where('active', 1)->orderby('created_at', 'DESC')->paginate(5);
         $name = 'Blog';
         return view('pages.blog', [
             'name' => $name,
@@ -55,11 +85,19 @@ class PagesController extends Controller
         ]);
     }
 
+    //* trang contact_us
+    public function contact_us() {
+        $name = 'Contact Us';
+        return view('pages.contact_us', [
+            'name' => $name
+        ]);
+    }
+
     //* trang video
     public function video() {
         $news = News::where('type', 0)->where('active', 1)->orderby('created_at', 'DESC')->paginate(5);
-        $name = 'Video';
-        return view('pages.blog', [
+        $name = '';
+        return view('pages.video', [
             'name' => $name,
             'news' => $news
         ]);
@@ -67,17 +105,19 @@ class PagesController extends Controller
 
     //* trang chi tiết
     public function detailsNews($id) {
-        $news = News::find($id);
+        $news = News::with(['Comment' => function($query) {
+            $query->where('active', 1)->orderBy('created_at', 'desc');
+        }, 'Comment.users'])->find($id);
+
         if ($news['type'] == 1) {
             $name = 'Tin tức';
         } else {
             $name = 'Video';
         }
-        // $_SESSION['view'] ='news/'.$id.'_'.$news->Sort_Title;
 
         $title = $news['title'];
-
         $tinlienquan = News::where('subcategory_id', $news['subcategory_id'])->take(4)->get();
+
         return view('pages.details', [
             'news' => $news,
             'name' => $name,
@@ -88,7 +128,7 @@ class PagesController extends Controller
 
     //* trang đăng nhập
     public function getLogin() {
-        return view('pages.login');
+        return view('auth.login');
     }
 
     //* xử lý đăng nhập
@@ -200,7 +240,7 @@ class PagesController extends Controller
             $file->move('upload/avatar', $img);
             if ($user['image'] != '') {
                 if ($user['image'] != 'avatar.jpg') {
-                    unlink('upload/avatar/' . $user->Image);
+                    unlink('upload/avatar/' . $user->image);
                 }
             }
             User::where('id', Auth::user()->id)->update(['image' => $img]);
@@ -211,8 +251,8 @@ class PagesController extends Controller
     //* xử lý tìm kiếm
     public function search(Request $request) {
         $keyword = $request['keyword'];
-        $news = News::where('title', 'like', "%$keyword%")->Where('active', 1)->orWhere('summary', 'like', "%$keyword%")->orWhere('content', 'like', "%$keyword%")->take(10)->paginate(5);
-
+        // $news = News::where('title', 'like', "%$keyword%")->Where('active', 1)->orWhere('summary', 'like', "%$keyword%")->orWhere('content', 'like', "%$keyword%")->take(10)->paginate(5);
+        $news = News::where('title', 'like', "%$keyword%")->Where('active', 1)->paginate(5);
         $name = 'Tìm kiếm';
 
         return view('pages.search', [
@@ -222,19 +262,22 @@ class PagesController extends Controller
         ]);
     }
 
-    //* trang báo theo danh mục
+    //* trang báo theo danh mục con (subcategory)
     public function subcategory($id) {
         $subcategory = SubCategory::find($id);
+        $category = Category::find($subcategory->category_id);
         $news = News::where('subcategory_id', $id)->paginate(5);
 
         return view('pages.subcategory', [
-            'name' => $subcategory['name'],
+            'name' => $category['name'],
             'title' => $subcategory['name'],
-            'news' => $news
+            'news' => $news,
+            'parent_category' => $category,
+            'is_subcategory' => true
         ]);
     }
 
-    //* trang báo theo danh mục con
+    //* trang báo theo danh mục (category)
     public function category($id) {
         $category = Category::find($id);
         $news = News::where('category_id', $id)->paginate(5);
@@ -242,7 +285,8 @@ class PagesController extends Controller
         return view('pages.category', [
             'name' => $category['name'],
             'title' => $category['name'],
-            'news' => $news
+            'news' => $news,
+            'is_subcategory' => false
         ]);
     }
 

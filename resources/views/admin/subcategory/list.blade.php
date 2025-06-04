@@ -10,7 +10,7 @@
             <div class="page-header-title">
                 <i class="feather icon-align-left bg-c-blue"></i>
                 <div class="d-inline">
-                    <h4>Danh Mục Con</h4>
+                    <h4>SubCategory</h4>
                     <span>List</span>
                 </div>
             </div>
@@ -21,7 +21,7 @@
                     <li class="breadcrumb-item">
                         <a href="index.html"><i class="feather icon-home"></i></a>
                     </li>
-                    <li class="breadcrumb-item"><a href="#!">Danh Mục Con</a> </li>
+                    <li class="breadcrumb-item"><a href="#!">Subcategory</a> </li>
                 </ul>
             </div>
         </div>
@@ -58,9 +58,9 @@
                                         <tr align="center">
                                             <th>ID</th>
                                             <th>Name</th>
-                                            <th>Danh Mục</th>
+                                            <th>Category</th>
                                             <th>Sort Name</th>
-                                            <th>Active</th>
+                                            <!-- <th>Active</th> -->
                                             <th>Delete</th>
                                             <th>Edit</th>
                                           
@@ -73,7 +73,7 @@
                                             <td>{!! $value['name'] !!}</td>
                                             <td>{!! $value['category']['name'] !!}</td>
                                             <td>{!! $value['sort_name'] !!}</td>
-                                            <td>
+                                            <!-- <td>
                                                 @if ( $value['active'] == 1 )
                                                 <a href="admin/subcategory/block/{!! $value['id'] !!}">
                                                   <img style="width: 40px" src="upload/icon/accept.png" alt="">
@@ -83,7 +83,7 @@
                                                     <img style="width: 40px" src="upload/icon/noaccept.png" alt="">
                                                 </a>
                                                 @endif
-                                            </td>
+                                            </td> -->
                                             <td class="center "><a class="btn btn-danger " href="admin/subcategory/delete/{!! $value['id'] !!}"> Delete</a></td>
                                             <td class="center "><a class="btn btn-warning " href="admin/subcategory/edit/{!! $value['id'] !!}">Edit</a></td>
                                         </tr>

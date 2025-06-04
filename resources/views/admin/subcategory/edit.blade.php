@@ -6,7 +6,7 @@
             <div class="page-header-title">
                 <i class="feather icon-align-left bg-c-blue"></i>
                 <div class="d-inline">
-                    <h4>Danh Mục Con</h4>
+                    <h4>SubCategory</h4>
                     <span>Edit</span>
                 </div>
             </div>
@@ -17,7 +17,7 @@
                     <li class="breadcrumb-item">
                         <a href=""><i class="feather icon-home"></i></a>
                     </li>
-                    <li class="breadcrumb-item"><a href="#!">Danh Mục Con</a> </li>
+                    <li class="breadcrumb-item"><a href="#!">Subcategory</a> </li>
                 </ul>
             </div>
         </div>
@@ -52,7 +52,7 @@
                             <form action="admin/subcategory/edit/{!! $subcategory['id'] !!}" method="POST">
                                 @csrf
                                 <div class="form-group row">
-                                    <label class="col-sm-1 col-form-label">Danh Mục Con</label>
+                                    <label class="col-sm-1 col-form-label">Subcategory</label>
                                     <div class="col-sm-11">
                                         <select name="category_id" class="form-control form-control-primary">
                                             @foreach ($category as $value)

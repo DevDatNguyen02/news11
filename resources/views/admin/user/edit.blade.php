@@ -79,13 +79,13 @@
                                     {!! 'checked' !!}
                                 @endif  type="radio">Admin
                                 </label>
-                                <label class="radio-inline">
+                                <!-- <label class="radio-inline">
                                     <input name="role" value="2"
                                     @if ($user['role'] == 2)
                                     {!! 'checked' !!}
                                 @endif
                                    type="radio">Nhân viên
-                                </label>
+                                </label> -->
                                 <label class="radio-inline">
                                     <input name="role" value="0" 
                                     @if ($user['role'] == 0)

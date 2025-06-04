@@ -3,7 +3,7 @@
 @section('content')
 <section class="content__news">
     <div class="list__items--contents">
-        @foreach ($news as $value)
+        @foreach ($news -> sortByDesc('id') as $value)
         <div class="item__news">
             <div class="image__news">
                 <a href="/news/{!! $value['id'] !!}_{!! $value['sort_title'] !!}.html">

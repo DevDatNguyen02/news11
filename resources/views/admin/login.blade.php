@@ -1,4 +1,4 @@
-<!doctype html>
+<!-- <!doctype html>
 <html lang="en">
 <head>
 <title>Login 04</title>
@@ -70,7 +70,7 @@
 									</label>
 								</div>
 								<div class="w-50 text-md-right">
-									<a href="#">Forgot Password</a>
+									<a href="{{ route('password.request') }}">Forgot Password</a>
 								</div>
 							</div>
 						</form>
@@ -89,4 +89,4 @@
 
 </body>
 </html>
-
+ -->
